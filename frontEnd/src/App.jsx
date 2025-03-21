@@ -12,7 +12,7 @@ function App() {
           <Route path="/userauth">   
             <Route index element={<Users />} />
             <Route path="create" element={<CreateUser />} />
-            <Route path="update" element={<UpdateUser />} />
+            <Route path="update/:id" element={<UpdateUser />} />
           </Route>
 
         </Routes>

@@ -1,19 +1,32 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 function Users() {
-  const [users, setUsers] = useState([
-    {
-      name: "John Doe",
-      email: "johndoe@gmail.com",
-      age: 20,
-    },
-    {
-      name: "Jane Smith",
-      email: "janesmith@gmail.com",
-      age: 25,
-    },
-  ]);
+  const [users, setUsers] = useState([]);
+
+  const handleDelete = (id) => {
+    axios.delete("http://127.0.0.1:3001/userauth/deleteUser/" + id)
+      .then((result) => {
+        console.log(result.data);
+        setUsers(result.data);        
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:3001/userauth")
+      .then((result) => {
+        console.log(result.data);
+        setUsers(result.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   return (
     <>
@@ -48,7 +61,7 @@ function Users() {
                   <td className="px-4 py-2 text-center">{user.age}</td>
                   <td className="px-4 py-2 flex justify-center gap-2">
                     <NavLink
-                      to="update"
+                      to={`update/${user._id}`}
                       className={
                         "px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
                       }
@@ -57,7 +70,12 @@ function Users() {
                       Edit
                     </NavLink>
 
-                    <button className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
+                    <button
+                      className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                      onClick={(e) => {
+                        handleDelete(user._id);
+                      }}
+                    >
                       Delete
                     </button>
                   </td>

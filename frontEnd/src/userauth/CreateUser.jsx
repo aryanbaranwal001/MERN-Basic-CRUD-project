@@ -1,11 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function CreateUser() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [age, setAge] = useState("");
-
+  const navigate = useNavigate(); 
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -14,11 +15,12 @@ function CreateUser() {
       email,
       age,
     };
-    console.log(dataToSend);
     axios
       .post("http://localhost:3001/userauth/createUser", dataToSend)
       .then((res) => {
         console.log(res);
+        navigate("/userauth/");0
+        console.log("navigate")
       })
       .catch((error) => {
         console.log(error);
